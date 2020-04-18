@@ -10,6 +10,7 @@ public class Portal : MonoBehaviour
 
     private void Start()
     {
+        path = new List<Vector3>();
         foreach (Transform child in pathTransform)
             path.Add(child.position);
     }
