@@ -475,7 +475,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d260f76697ce6b43832a4bfd215ae6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildUI: {fileID: 2879870633610658105}
+  buildUI: {fileID: 2879870633610658107}
 --- !u!1 &2879870632966898838
 GameObject:
   m_ObjectHideFlags: 0
@@ -887,6 +887,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0847b18ea583ba64b98c0a87c5c58e9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireBuyButton: {fileID: 2879870632968798711}
+  iceBuyButton: {fileID: 2879870632934812162}
+  lightningBuyButton: {fileID: 2879870632966898835}
 --- !u!1 &2879870633948228248
 GameObject:
   m_ObjectHideFlags: 0

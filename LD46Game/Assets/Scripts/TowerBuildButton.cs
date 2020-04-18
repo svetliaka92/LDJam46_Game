@@ -13,6 +13,8 @@ public class TowerBuildButton : MonoBehaviour
     {
         if (TowerFactory.Instance)
             TowerFactory.Instance.BuildTower(parentNode, towerToBuildType);
+
+        parentNode.UpdateState();
     }
 
     public void SetState(bool canBuy)

@@ -12,6 +12,8 @@ public class TowerUpgradeButton : MonoBehaviour
     public void Click()
     {
         TowerFactory.Instance.UpgradeTower(parentTower, towerType);
+
+        parentTower.UpdateState();
     }
 
     public void SetState(bool flag)

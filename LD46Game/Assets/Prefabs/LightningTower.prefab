@@ -7,10 +7,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4109750769402139384, guid: 17f4c98c47d7c6047811d4e6b721d327,
+        type: 3}
+      propertyPath: towerType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4109750769402139386, guid: 17f4c98c47d7c6047811d4e6b721d327,
         type: 3}
       propertyPath: m_Name
-      value: FireTower
+      value: LightningTower
       objectReference: {fileID: 0}
     - target: {fileID: 4109750769402139387, guid: 17f4c98c47d7c6047811d4e6b721d327,
         type: 3}

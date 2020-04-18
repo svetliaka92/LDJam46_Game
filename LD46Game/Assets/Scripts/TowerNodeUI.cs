@@ -1,13 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TowerNodeUI : MonoBehaviour
 {
-    private void Update()
+    [SerializeField] private TowerBuildButton fireBuyButton;
+    [SerializeField] private TowerBuildButton iceBuyButton;
+    [SerializeField] private TowerBuildButton lightningBuyButton;
+
+    public void UpdateButtons()
     {
-        // turn towards the camera
-        if (CameraRaycaster.Instance)
-            transform.LookAt(CameraRaycaster.Instance.mainCam.transform);
+        fireBuyButton.SetState(PlayerMoneyManager.Instance.GetMoney()
+                               >= PlayerMoneyManager.Instance.GetPrice(TowerType.Fire, 0));
+
+        iceBuyButton.SetState(PlayerMoneyManager.Instance.GetMoney()
+                              >= PlayerMoneyManager.Instance.GetPrice(TowerType.Ice, 0));
+
+        lightningBuyButton.SetState(PlayerMoneyManager.Instance.GetMoney()
+                                    >= PlayerMoneyManager.Instance.GetPrice(TowerType.Lightning, 0));
     }
 }

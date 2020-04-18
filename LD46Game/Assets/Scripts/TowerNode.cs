@@ -5,21 +5,27 @@ using UnityEngine;
 
 public class TowerNode : MonoBehaviour, IRaycastable
 {
-    [SerializeField] private GameObject buildUI;
+    [SerializeField] private TowerNodeUI buildUI;
 
     public void HandleClick()
     {
-        print(gameObject);
+        UpdateState();
         ShowUI();
     }
 
     public void HandleDeselect()
     {
+        UpdateState();
         ShowUI(false);
     }
 
     private void ShowUI(bool show = true)
     {
-        buildUI.SetActive(show);
+        buildUI.gameObject.SetActive(show);
+    }
+
+    public void UpdateState()
+    {
+        buildUI.UpdateButtons();
     }
 }

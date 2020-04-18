@@ -14,7 +14,10 @@ public class Projectile : MonoBehaviour
     private void Update()
     {
         if (target == null)
+        {
             Destroy(gameObject);
+            return;
+        }
 
         Vector3 dir = target.transform.position - transform.position;
         float distThisFrame = bulletSpeed * Time.deltaTime;
@@ -33,6 +36,7 @@ public class Projectile : MonoBehaviour
     private void HitEnemy()
     {
         // update model
+        print("Projectile hit for " + damage);
         target.TakeDamage(damage);
 
         // update presentation

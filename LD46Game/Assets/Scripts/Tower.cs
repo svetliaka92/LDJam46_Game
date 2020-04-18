@@ -6,7 +6,7 @@ using UnityEngine;
 public class Tower : MonoBehaviour, IRaycastable
 {
     [Header("Unity UI elements")]
-    [SerializeField] private GameObject towerUI;
+    [SerializeField] private TowerUI towerUI;
 
     [Space(10)]
     [Header("Projectile needed elements")]
@@ -15,6 +15,7 @@ public class Tower : MonoBehaviour, IRaycastable
 
     [Space(10)]
     [Header("Tower stats")]
+    [SerializeField] private TowerType towerType = TowerType.Fire;
     [SerializeField] private float damage;
     [SerializeField] private float fireRate;
     [SerializeField] private float range;
@@ -23,6 +24,8 @@ public class Tower : MonoBehaviour, IRaycastable
     [Space(10)]
     [Header("Enemy targetting specific")]
     [SerializeField] private int enemyLayer = 8;
+
+    public TowerType TowerType => towerType;
 
     private int _upgradeLevel = 0;
     public int UpgradeLevel => _upgradeLevel;
@@ -49,11 +52,6 @@ public class Tower : MonoBehaviour, IRaycastable
         currentBody.SetActive(true);
     }
 
-    private void Start()
-    {
-        StartCoroutine(UpdateTarget());
-    }
-
     private void Update()
     {
         TryFire();
@@ -63,7 +61,9 @@ public class Tower : MonoBehaviour, IRaycastable
     {
         if (fireCD <= 0)
         {
-            if (currentTarget)
+            UpdateTarget();
+
+            if (targetEnemy)
             {
                 Fire();
                 fireCD = 1 / fireRate;
@@ -77,32 +77,61 @@ public class Tower : MonoBehaviour, IRaycastable
     {
         // firing
 
-        Projectile bullet = Instantiate(projectilePrefab);
+        Projectile bullet = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
         bullet.SetDamage(damage);
         bullet.SetTarget(targetEnemy);
     }
 
-    private IEnumerator UpdateTarget()
+    protected virtual void UpdateTarget()
     {
-        yield return null;
-        //while (true)
-        //{
+        int layerMask = 1 << enemyLayer;
+        RaycastHit[] enemies = Physics.SphereCastAll(transform.position, range, Vector3.up, 0, layerMask);
 
-        //}
+        float distance = float.MaxValue;
+        Enemy nearestEnemy = null;
+
+        foreach (RaycastHit hit in enemies)
+        {
+            Enemy enemy = hit.collider.GetComponent<Enemy>();
+            GetClosestEnemy(ref distance, ref nearestEnemy, enemy);
+
+            if (nearestEnemy && distance <= range)
+                targetEnemy = nearestEnemy;
+            else
+                targetEnemy = null;
+        }
+    }
+
+    protected virtual void GetClosestEnemy(ref float shortestDistance, ref Enemy nearestEnemy, Enemy enemy)
+    {
+        float distToEnemy = Vector3.Distance(transform.position, enemy.transform.position);
+
+        if (distToEnemy <= shortestDistance)
+        {
+            shortestDistance = distToEnemy;
+            nearestEnemy = enemy;
+        }
     }
 
     public void HandleClick()
     {
+        UpdateState();
         ShowUI();
     }
 
     public void HandleDeselect()
     {
+        UpdateState();
         ShowUI(false);
     }
 
     private void ShowUI(bool show = true)
     {
-        towerUI.SetActive(show);
+        towerUI.gameObject.SetActive(show);
+    }
+
+    public void UpdateState()
+    {
+        towerUI.UpdateButtons();
     }
 }

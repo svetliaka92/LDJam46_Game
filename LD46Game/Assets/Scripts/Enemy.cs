@@ -10,14 +10,18 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private float currentHealth;
 
-    Vector3[] path;
-    float timeToMove;
+    public event Action<int> onDeathEvent;
 
-    int followPathId = -1;
+    private int rewardPoints;
+    private Vector3[] path;
+    private float timeToMove;
 
-    public void Init(List<Vector3> path)
+    private int followPathId = -1;
+
+    public void Init(List<Vector3> path, int points)
     {
         currentHealth = maxHealth;
+        rewardPoints = points;
 
         // we're using the LeanTween MoveSpline method, so were duplicating the first and last point of the path
         // as the first and last entries of the array are used for orientation
@@ -44,7 +48,6 @@ public class Enemy : MonoBehaviour
     private void FollowPath()
     {
         followPathId = LeanTween.moveSpline(gameObject, path, timeToMove)
-                                .setEaseInQuint()
                                 .setOnComplete(OnEndReached)
                                 .uniqueId;
     }
@@ -55,13 +58,14 @@ public class Enemy : MonoBehaviour
         if (currentHealth <= 0)
         {
             Die();
+            onDeathEvent?.Invoke(rewardPoints);
         }
     }
 
     private void Die()
     {
         CancelMovement();
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
     private void CancelMovement()
@@ -76,5 +80,9 @@ public class Enemy : MonoBehaviour
     private void OnEndReached()
     {
         // hit heart
+        if (PlayerLifeManager.Instance)
+            PlayerLifeManager.Instance.TakeDamage();
+
+        Die();
     }
 }
