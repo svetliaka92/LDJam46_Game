@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CameraRaycaster : MonoBehaviour
 {
@@ -34,6 +35,9 @@ public class CameraRaycaster : MonoBehaviour
 
     private void RaycastForTarget()
     {
+        if (ClickedOnUI())
+            return;
+
         Ray ray = mainCam.ScreenPointToRay(Input.mousePosition);
         RaycastHit info;
         if (Physics.Raycast(ray, out info))
@@ -56,5 +60,21 @@ public class CameraRaycaster : MonoBehaviour
                 selection = null;
             }
         }
+    }
+
+    private bool ClickedOnUI()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+
+        foreach (RaycastResult raycastResult in results)
+        {
+            if (raycastResult.gameObject.layer == 5)
+                return true;
+        }
+
+        return false;
     }
 }

@@ -5,23 +5,49 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour, IRaycastable
 {
+    [Header("Unity UI elements")]
+    [SerializeField] private GameObject towerUI;
+
+    [Space(10)]
     [Header("Projectile needed elements")]
     [SerializeField] private Transform firePoint;
     [SerializeField] private Projectile projectilePrefab;
 
     [Space(10)]
     [Header("Tower stats")]
-    [SerializeField] private float range;
     [SerializeField] private float damage;
     [SerializeField] private float fireRate;
+    [SerializeField] private float range;
+    [SerializeField] private GameObject[] towerBodies;
 
     [Space(10)]
     [Header("Enemy targetting specific")]
     [SerializeField] private int enemyLayer = 8;
 
+    private int _upgradeLevel = 0;
+    public int UpgradeLevel => _upgradeLevel;
+
     private float fireCD;
+
+    private GameObject currentBody = null;
+
     private Transform currentTarget;
     private Enemy targetEnemy;
+
+    internal void SetStats(int level, float damage, float fireRate, float range)
+    {
+        _upgradeLevel = level;
+        this.damage = damage;
+        this.fireRate = fireRate;
+        this.range = range;
+
+        // update visuals
+        if (currentBody != null)
+            currentBody.SetActive(false);
+
+        currentBody = towerBodies[_upgradeLevel];
+        currentBody.SetActive(true);
+    }
 
     private void Start()
     {
@@ -67,11 +93,16 @@ public class Tower : MonoBehaviour, IRaycastable
 
     public void HandleClick()
     {
-        // show tower upgrade UI
+        ShowUI();
     }
 
     public void HandleDeselect()
     {
-        
+        ShowUI(false);
+    }
+
+    private void ShowUI(bool show = true)
+    {
+        towerUI.SetActive(show);
     }
 }
