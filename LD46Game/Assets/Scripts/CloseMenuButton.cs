@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartGameActualButton : MenuButton
+public class CloseMenuButton : MenuButton
 {
-    [SerializeField] private string sceneName = "Game";
+    [SerializeField] private int menuId = 2;
 
     public override void Click()
     {
         base.Click();
 
         if (Main.Instance)
-            Main.Instance.LoadScene(sceneName);
+            Main.Instance.CloseMenu(menuId);
     }
 }

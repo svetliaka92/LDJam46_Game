@@ -44,7 +44,7 @@ public class MenuButton : MonoBehaviour
         }
     }
 
-    public void CompleteAnimation()
+    private void CompleteAnimation()
     {
         scaleTweenId = -1;
     }

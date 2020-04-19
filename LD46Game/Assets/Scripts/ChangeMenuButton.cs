@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class StartGameButton : MenuButton
+public class ChangeMenuButton : MenuButton
 {
     [SerializeField] private int menuToOpen = 1;
 
