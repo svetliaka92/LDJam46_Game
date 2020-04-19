@@ -36,7 +36,6 @@ public class Projectile : MonoBehaviour
     private void HitEnemy()
     {
         // update model
-        print("Projectile hit for " + damage);
         target.TakeDamage(damage);
 
         // update presentation

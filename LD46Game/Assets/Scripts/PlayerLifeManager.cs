@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +11,13 @@ public class PlayerLifeManager : MonoBehaviour
     [SerializeField] private int maxLife;
     private int currentLife;
 
-    private void Awake()
+    public event Action playerDeathEvent;
+
+    public void Init()
     {
         _instance = this;
+
+        Restart();
     }
 
     private void OnDestroy()
@@ -20,7 +25,7 @@ public class PlayerLifeManager : MonoBehaviour
         _instance = null;
     }
 
-    private void Start()
+    private void Restart()
     {
         currentLife = maxLife;
     }
@@ -33,7 +38,7 @@ public class PlayerLifeManager : MonoBehaviour
         {
             currentLife = 0;
 
-            print("You lose!");
+            playerDeathEvent?.Invoke();
         }
     }
 }

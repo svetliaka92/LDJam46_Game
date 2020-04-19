@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float currentHealth;
 
     public event Action<int> onDeathEvent;
+    public event Action endReachedEvent;
 
     private int rewardPoints;
     private Vector3[] path;
@@ -18,8 +19,9 @@ public class Enemy : MonoBehaviour
 
     private int followPathId = -1;
 
-    public void Init(List<Vector3> path, int points)
+    public void Init(List<Vector3> path, float health, int points)
     {
+        maxHealth = health;
         currentHealth = maxHealth;
         rewardPoints = points;
 
@@ -57,8 +59,8 @@ public class Enemy : MonoBehaviour
         currentHealth = Mathf.Max(currentHealth - value, 0);
         if (currentHealth <= 0)
         {
-            Die();
             onDeathEvent?.Invoke(rewardPoints);
+            Die();
         }
     }
 
@@ -83,6 +85,7 @@ public class Enemy : MonoBehaviour
         if (PlayerLifeManager.Instance)
             PlayerLifeManager.Instance.TakeDamage();
 
+        endReachedEvent?.Invoke();
         Die();
     }
 }

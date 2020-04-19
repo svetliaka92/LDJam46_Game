@@ -11,7 +11,7 @@ public class PlayerMoneyManager : MonoBehaviour
 
     [SerializeField] private int _money = 100;
 
-    private void Awake()
+    public void Init()
     {
         _instance = this;
     }
