@@ -50,6 +50,9 @@ public class Tower : MonoBehaviour, IRaycastable
 
         currentBody = towerBodies[_upgradeLevel];
         currentBody.SetActive(true);
+
+        UpdatePriceText();
+        ShowUI(false);
     }
 
     public void SetStatsGetter(TowerStatsGetter towerStatsGetter)
@@ -120,12 +123,14 @@ public class Tower : MonoBehaviour, IRaycastable
 
     public void HandleClick()
     {
+        UpdatePriceText();
         UpdateState();
         ShowUI();
     }
 
     public void HandleDeselect()
     {
+        UpdatePriceText();
         UpdateState();
         ShowUI(false);
     }
@@ -133,6 +138,11 @@ public class Tower : MonoBehaviour, IRaycastable
     private void ShowUI(bool show = true)
     {
         towerUI.gameObject.SetActive(show);
+    }
+
+    private void UpdatePriceText()
+    {
+        towerUI.UpdateText();
     }
 
     public void UpdateState()

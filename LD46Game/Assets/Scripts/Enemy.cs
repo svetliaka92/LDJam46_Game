@@ -19,11 +19,14 @@ public class Enemy : MonoBehaviour
 
     private int followPathId = -1;
 
+    private bool isDead = false;
+
     public void Init(List<Vector3> path, float health, int points)
     {
         maxHealth = health;
         currentHealth = maxHealth;
         rewardPoints = points;
+        isDead = false;
 
         // we're using the LeanTween MoveSpline method, so were duplicating the first and last point of the path
         // as the first and last entries of the array are used for orientation
@@ -44,7 +47,20 @@ public class Enemy : MonoBehaviour
         for (int i = 0; i < this.path.Length; i++)
             this.path[i] = inputPath[i];
 
-        timeToMove = Vector3.Distance(inputPath[0], inputPath[inputPath.Count - 1]) / movementSpeed;
+        float pathLength = CalculateTotalPathLength(path);
+
+        timeToMove = pathLength / movementSpeed;
+    }
+
+    private float CalculateTotalPathLength(List<Vector3> path)
+    {
+        float length = 0f;
+        for (int i = 0; i < path.Count - 1; i++)
+        {
+            length += Vector3.Distance(path[i], path[i + 1]);
+        }
+
+        return length;
     }
 
     private void FollowPath()
@@ -57,8 +73,9 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(float value)
     {
         currentHealth = Mathf.Max(currentHealth - value, 0);
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !isDead)
         {
+            isDead = true;
             onDeathEvent?.Invoke(rewardPoints);
             Die();
         }
@@ -81,11 +98,16 @@ public class Enemy : MonoBehaviour
 
     private void OnEndReached()
     {
-        // hit heart
-        if (PlayerLifeManager.Instance)
-            PlayerLifeManager.Instance.TakeDamage();
+        if (!isDead)
+        {
+            // hit heart
+            if (PlayerLifeManager.Instance)
+                PlayerLifeManager.Instance.TakeDamage();
 
-        endReachedEvent?.Invoke();
+            isDead = true;
+            endReachedEvent?.Invoke();
+        }
+        
         Die();
     }
 }

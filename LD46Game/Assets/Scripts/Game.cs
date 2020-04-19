@@ -12,6 +12,7 @@ public class Game : MonoBehaviour
     [SerializeField] private PlayerMoneyManager playerMoneyManager;
     [SerializeField] private EnemyWaveManager waveManager;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private HeartPillar heartPillar;
 
     [SerializeField] private float timeToGameStart = 60f;
 
@@ -37,6 +38,7 @@ public class Game : MonoBehaviour
         playerMoneyManager.Init();
         waveManager.Init();
         uiManager.Init(waveManager);
+        heartPillar.Init();
 
         waveManager.onWaveTimerStart += uiManager.WaveCountdownStarted;
         waveManager.onWaveStart += uiManager.WaveStarted;
@@ -87,6 +89,8 @@ public class Game : MonoBehaviour
 
             // do fade in to win screen
             print("You win!");
+
+            Main.Instance.OnGameWon();
         }
     }
 
@@ -98,6 +102,8 @@ public class Game : MonoBehaviour
 
             // do fade in to lose screen
             print("You lose!");
+
+            Main.Instance.OnGameLost();
         }
     }
 }

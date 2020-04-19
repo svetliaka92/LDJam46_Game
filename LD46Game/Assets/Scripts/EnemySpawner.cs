@@ -41,6 +41,9 @@ public class EnemySpawner : MonoBehaviour
         minEnemyRewardPoints = minPoints;
         maxEnemyRewardPoints = maxPoints;
 
+        spawnedEnemies = 0;
+        defeatedEnemies = 0;
+
         canSpawn = true;
     }
 

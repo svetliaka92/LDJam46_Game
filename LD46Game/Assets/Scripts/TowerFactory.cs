@@ -36,7 +36,7 @@ public class TowerFactory : MonoBehaviour
                        towerStatGetter.GetTowerRange(towerType, 0));
 
         // hide node mesh
-        node.gameObject.SetActive(false);
+        node.TowerBuiltOnNode();
 
         PlayerMoneyManager.Instance.UseMoney(PlayerMoneyManager.Instance.GetPrice(towerType, 0));
     }
