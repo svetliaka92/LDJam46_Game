@@ -10,6 +10,10 @@ public class EnemyWaveManager : MonoBehaviour
     [SerializeField] private int enemiesIncresePerWave = 10;
     [SerializeField] private float baseEnemyHealth = 20f;
     [SerializeField] private float enemyHealthIncreasePerWave = 15f;
+    [SerializeField] private int baseEnemyMinRewardPoints = 50;
+    [SerializeField] private int baseEnemyMaxRewardPoints = 80;
+    [SerializeField] private int enemyRewardPointsIncreasePerWave = 20;
+
     [SerializeField] private float timeDelayBetweenEnemies = 2;
     [SerializeField] private float timeBetweenWaves = 60;
 
@@ -95,7 +99,11 @@ public class EnemyWaveManager : MonoBehaviour
 
     public void StartNextWave()
     {
-        enemySpawner.StartWave(EnemiesThisWave(), timeDelayBetweenEnemies, EnemyHealthThisWave());
+        enemySpawner.StartWave(EnemiesThisWave(),
+                               timeDelayBetweenEnemies,
+                               EnemyHealthThisWave(),
+                               EnemyMinRewardPointsThisWave(),
+                               EnemyMaxRewardPointsThisWave());
 
         onWaveStart?.Invoke();
     }
@@ -108,6 +116,16 @@ public class EnemyWaveManager : MonoBehaviour
     private float EnemyHealthThisWave()
     {
         return baseEnemyHealth + currentWave * enemyHealthIncreasePerWave;
+    }
+
+    private int EnemyMinRewardPointsThisWave()
+    {
+        return baseEnemyMinRewardPoints + currentWave * enemyRewardPointsIncreasePerWave;
+    }
+
+    private int EnemyMaxRewardPointsThisWave()
+    {
+        return baseEnemyMaxRewardPoints + currentWave * enemyRewardPointsIncreasePerWave;
     }
 
     public float GetWaveTimer()

@@ -8,6 +8,7 @@ public class PlayerLifeManager : MonoBehaviour
     private static PlayerLifeManager _instance;
     public static PlayerLifeManager Instance => _instance;
 
+    [SerializeField] private PlayerLifeUI playerLifeUI;
     [SerializeField] private int maxLife;
     private int currentLife;
 
@@ -18,6 +19,9 @@ public class PlayerLifeManager : MonoBehaviour
         _instance = this;
 
         Restart();
+
+        playerLifeUI.Init(maxLife);
+        playerLifeUI.UpdateValue(maxLife);
     }
 
     private void OnDestroy()
@@ -40,5 +44,7 @@ public class PlayerLifeManager : MonoBehaviour
 
             playerDeathEvent?.Invoke();
         }
+
+        playerLifeUI.UpdateValue(currentLife);
     }
 }

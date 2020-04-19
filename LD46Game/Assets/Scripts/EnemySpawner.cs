@@ -7,8 +7,7 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Enemy enemyPrefab;
     [SerializeField] private List<Portal> portals;
-    [SerializeField] private int minEnemyRewardPoints = 20;
-    [SerializeField] private int maxEnemyRewardPoints = 100;
+    
 
     [SerializeField] bool debugging = false;
 
@@ -20,6 +19,8 @@ public class EnemySpawner : MonoBehaviour
     private float enemyHealth = 0f;
     private float enemyDelay = 0f;
     private float enemySpawnTimer = -1f;
+    private int minEnemyRewardPoints = 20;
+    private int maxEnemyRewardPoints = 100;
     private bool canSpawn = false;
     private bool updateTimers = false;
 
@@ -28,11 +29,17 @@ public class EnemySpawner : MonoBehaviour
         onWaveCompleted += waveManager.OnWaveCompleted;
     }
 
-    public void StartWave(int numEnemies, float delayBetweenEnemies, float enemyHealth)
+    public void StartWave(int numEnemies,
+                          float delayBetweenEnemies,
+                          float enemyHealth,
+                          int minPoints,
+                          int maxPoints)
     {
         enemiesThisWave = numEnemies;
         enemyDelay = delayBetweenEnemies;
         this.enemyHealth = enemyHealth;
+        minEnemyRewardPoints = minPoints;
+        maxEnemyRewardPoints = maxPoints;
 
         canSpawn = true;
     }

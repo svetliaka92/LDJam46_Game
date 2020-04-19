@@ -52,6 +52,11 @@ public class Tower : MonoBehaviour, IRaycastable
         currentBody.SetActive(true);
     }
 
+    public void SetStatsGetter(TowerStatsGetter towerStatsGetter)
+    {
+        towerUI.Init(towerStatsGetter);
+    }
+
     private void Update()
     {
         TryFire();

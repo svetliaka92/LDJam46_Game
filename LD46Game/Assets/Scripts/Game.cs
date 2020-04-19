@@ -21,6 +21,9 @@ public class Game : MonoBehaviour
 
     private bool updateTimers = false;
 
+    private bool isGameWon = false;
+    private bool isGameLost = false;
+
     private void Awake()
     {
         Init();
@@ -78,11 +81,23 @@ public class Game : MonoBehaviour
 
     private void WinGame()
     {
-        print("You win!");
+        if (!isGameWon)
+        {
+            isGameWon = true;
+
+            // do fade in to win screen
+            print("You win!");
+        }
     }
 
     private void LoseGame()
     {
-        print("You lose!");
+        if (!isGameLost)
+        {
+            isGameLost = true;
+
+            // do fade in to lose screen
+            print("You lose!");
+        }
     }
 }

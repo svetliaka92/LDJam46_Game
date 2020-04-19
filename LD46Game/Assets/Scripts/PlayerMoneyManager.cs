@@ -7,6 +7,7 @@ public class PlayerMoneyManager : MonoBehaviour
     private static PlayerMoneyManager _instance;
     public static PlayerMoneyManager Instance => _instance;
 
+    [SerializeField] private PlayerMoneyUI playerMoneyUI;
     [SerializeField] private TowerStats stats;
 
     [SerializeField] private int _money = 100;
@@ -14,6 +15,8 @@ public class PlayerMoneyManager : MonoBehaviour
     public void Init()
     {
         _instance = this;
+
+        UpdateUI();
     }
 
     private void OnDestroy()
@@ -28,9 +31,16 @@ public class PlayerMoneyManager : MonoBehaviour
         UpdateUI();
     }
 
+    public void UseMoney(int value)
+    {
+        _money -= value;
+
+        UpdateUI();
+    }
+
     private void UpdateUI()
     {
-
+        playerMoneyUI.UpdateMoneyText(_money);
     }
 
     public int GetMoney()

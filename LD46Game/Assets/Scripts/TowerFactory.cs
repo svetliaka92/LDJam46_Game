@@ -29,6 +29,7 @@ public class TowerFactory : MonoBehaviour
         tower.transform.position = node.transform.position;
         tower.transform.SetParent(towerParent);
 
+        tower.SetStatsGetter(towerStatGetter);
         tower.SetStats(0,
                        towerStatGetter.GetTowerDamage(towerType, 0),
                        towerStatGetter.GetTowerFireRate(towerType, 0),
@@ -36,6 +37,8 @@ public class TowerFactory : MonoBehaviour
 
         // hide node mesh
         node.gameObject.SetActive(false);
+
+        PlayerMoneyManager.Instance.UseMoney(PlayerMoneyManager.Instance.GetPrice(towerType, 0));
     }
 
     public void UpgradeTower(Tower tower, TowerType towerType)
@@ -50,5 +53,7 @@ public class TowerFactory : MonoBehaviour
                            towerStatGetter.GetTowerDamage(towerType, towerLevel),
                            towerStatGetter.GetTowerFireRate(towerType, towerLevel),
                            towerStatGetter.GetTowerRange(towerType, towerLevel));
+
+        PlayerMoneyManager.Instance.UseMoney(PlayerMoneyManager.Instance.GetPrice(towerType, towerLevel));
     }
 }
